@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0, user-scalable=0" name="viewport"/>
+	<title></title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/style.css">
+	<script type="text/javascript" src="__PUBLIC__/Home/js/jquery.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Home/js/jquery.flexslider-min.js"></script>
+</head>
+<body>
+	<section class="warp">
+		<header>
+			<section class="product_main_box">
+				<ul class="slides">
+					<li><img src="__PUBLIC__/Home/images/banner_1.png"></li>
+					<li><img src="__PUBLIC__/Home/images/banner_1.png"></li>
+				</ul>
+			</section>
+		</header>
+		<section class="container">
+			<section class="product_box1">
+				<section class="product_box1_son">
+					<ul>
+						<li class="p"><a href=""><img class="lazyload" id="img_1" data-src="__PUBLIC__/Home/images/1.png"><span>特价商品</span></a></li>
+						<li class="p"><a href=""><img class="lazyload" id="img_2" data-src="__PUBLIC__/Home/images/2.png"><span>限时抢购</span></a></li>
+						<li class="p"><a href=""><img class="lazyload" id="img_3" data-src="__PUBLIC__/Home/images/3.png"><span>蓝领生活专区</span></a></li>
+						<li class="p"><a href="category.html"><img class="lazyload" id="img_4" data-src="__PUBLIC__/Home/images/4.png"><span>全部分类</span></a></li>
+					</ul>
+				</section>
+			</section>
+			<section class="product_box2">
+				<section class="product_box2_son1">
+					<section class="t"><span>必抢</span></section>
+					<ul>
+						<foreach name="rush" item="vo">
+							<li class="p"><a href="">
+								<img class="lazyload" id="img_2_1" data-src="__PUBLIC__/Home/images/item1.png">
+								<section class="good_msg">
+									<section class="good_name">{$vo.name}</section>
+									<section class="price">￥{$vo.price}</section>
+								</section>
+							</a></li>
+						</foreach>
+
+					</ul>
+				</section>
+				<section class="product_box2_son2">
+					<section class="t"><span style="width: 100px;">蓝领生活专区</span></section>
+					<ul>
+						<foreach name="blue" item="vo">
+							<li class="p"><a href="">
+								<img class="lazyload" id="img_2_1" data-src="__PUBLIC__/Home/images/item1.png">
+								<section class="good_msg">
+									<section class="good_name">{$vo.name}</section>
+									<section class="price">￥{$vo.price}</section>
+								</section>
+							</a></li>
+						</foreach>
+					</ul>
+				</section>
+				<section class="product_box2_son3">
+					<section class="t"><span>特价商品</span></section>
+					<ul>
+						<foreach name="special" item="vo">
+							<li class="p"><a href="">
+								<img class="lazyload" id="img_2_1" data-src="__PUBLIC__/Home/images/item1.png">
+								<section class="good_msg">
+									<section class="good_name">{$vo.name}</section>
+									<section class="price">￥{$vo.price}</section>
+								</section>
+							</a></li>
+						</foreach>
+					</ul>
+				</section>
+				<section class="product_box2_son4">
+					<section class="t"><span>热销产品</span></section>
+					<ul>
+						<foreach name="selling" item="vo">
+							<li class="p"><a href="">
+								<img class="lazyload" id="img_2_1" data-src="__PUBLIC__/Home/images/item1.png">
+								<section class="good_msg">
+									<section class="good_name">{$vo.name}</section>
+									<section class="price">￥{$vo.price}</section>
+								</section>
+							</a></li>
+						</foreach>
+					</ul>
+				</section>
+			</section>
+		</section>
+	</section>
+	<script type="text/javascript">
+		$('.product_main_box').flexslider({
+			animation: "slide",
+			direction:"horizontal",
+			easing:"swing",
+			slideshow: true,
+			slideshowSpeed: 5000,
+			animationDuration:600,
+			directionNav:false,
+		});
+		var renderCvs = function(parent,max){
+			var lazyloadImage = $('.lazyload',parent);
+			if(lazyloadImage.length<1){
+				return;
+			}
+			var max = max||lazyloadImage.length;
+			for(var i=0;i<max;i++){
+				var imgId = lazyloadImage[i].id;
+				var imageCache = localStorage.getItem(imgId);
+				if(imageCache){
+					lazyloadImage[i].src = imageCache;
+					continue;
+				}
+
+				var img = new Image();
+				img.index = i;
+				img.id = imgId;
+				img.crossorigin="anonymous";
+				img.onload = function(){
+					var _this = this;
+					var zCvs = $('#'+this.id);
+					var domCvs = zCvs[0];
+					domCvs.src = this.src;
+					zCvs.removeClass('lazyload');
+					try{
+						var cvs = document.createElement('canvas');
+						cvs.style.display = 'none';
+						document.body.appendChild(cvs);
+						var rcvs = cvs.getContext('2d');
+						cvs.width = _this.width;
+						cvs.height =  _this.height;
+						rcvs.drawImage(this,0,0);
+						setTimeout(function(){
+							var data = cvs.toDataURL();
+							localStorage.setItem(_this.id,data);
+							document.body.removeChild(cvs);
+						},200);
+					}catch(ex){
+
+					}
+				}
+				img.src = lazyloadImage[i].getAttribute('data-src');
+			}
+		}
+		renderCvs($('.warp'));
+
+
+	</script>
+</body>
+</html>

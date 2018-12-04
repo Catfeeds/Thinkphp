@@ -1,0 +1,127 @@
+<extend name="Public:base"/>
+<block name='resmenu'>active open</block>
+<block name='ressubmenugamemgr'>active</block>
+<block name="pagecont">
+    <div id="main-container">
+        <div class="padding-md">
+            <div class="panel panel-default table-responsive">
+                <div class="panel-heading">
+                    <h4>游戏管理
+                    <span class="label label-info pull-right">共 {$total} 项</span></h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4">
+                            <a href="{:U('Resource/addgame')}" class="btn btn-sm btn-success" type="button"><i class="fa fa-plus fa-lg"></i> 增加游戏</a>
+                        </div><!-- /.col -->
+
+	                    <div class="col-md-4 col-sm-4">
+		                    <input type="test" name="keywords" placeholder="请输入搜索关键字" id="keywords">
+		                    <a href="#" class="btn btn-sm btn-success" type="button" id="keyword"></i> 关键字筛选</a>
+	                    </div>
+
+                    </div><!-- /.row -->
+                </div>
+                <table class="table table-striped" id="responsiveTable">
+                    <thead>
+                    <tr>
+	                    <th width="4%">ID</th>
+                        <th width="13%">游戏名称</th>
+	                    <th width="5%">游戏角标</th>
+                        <th width="5%">当前版本</th>
+                        <th width="6%">发布时间</th>
+                        <th width="4%">推荐</th>
+                        <th width="4%">下载量</th>
+                        <th width="4%">状态</th>
+                        <th width="18%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="data" id="vo">
+                        <tr>
+	                        <td>{$vo.id}</td>
+                            <td>{$vo.name}</td>
+	                        <td>
+		                        <empty name="vo.cornerurl">
+			                        无
+			                        <else/>
+			                        <img src="{$Think.const.WEB_ROOT}{$vo.cornerurl}" onload="if(this.width>50 ) this.width=50;  if(this.height>20) this.height=20;">
+		                        </empty>
+	                        </td>
+                            <td>{$vo.version}</td>
+                            <td>{$vo.pubdate}</td>
+                            <td><if condition="($vo.isrecommend eq '0')">
+	                            <a class="btn btn-success btn-xs">不推荐</a>
+	                            <else/>
+	                            <a class="btn btn-danger btn-xs">推荐</a></if>
+                            </td>
+                            <td class="center">{$vo.downtimes}</td>
+                            <td class="center">
+                                <if condition="($vo.status eq 1) ">
+                                    <a class="btn btn-success btn-xs">正常</a>
+                                    <else/>
+                                    <a class="btn btn-danger btn-xs">下架</a>
+                                </if>
+                            </td>
+                            <td class="center">
+                                <if condition="($vo.isrecommend eq 0) ">
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Resource/game_isrecommend',array('id'=>$vo['id'],'isrecommend'=>'1'))}" onclick="if(!confirm('您是否确定推荐该游戏？？')){return  false;}">推荐</a>
+                                    <else/>
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Resource/game_isrecommend',array('id'=>$vo['id'],'isrecommend'=>'0'))}" onclick="if(!confirm('您是否确定不推荐该游戏？？')){return  false;}">取消推荐</a>
+                                </if>
+
+	                            <if condition="($vo.slide eq 0) ">
+		                           <empty name="vo.cover">
+			                           <a type="button" class="btn btn-lg btn-primary btn-xs" disabled="disabled" href="{:U('Resource/slide',array('id'=>$vo['id'],'slide'=>'1'))}" onclick="if(!confirm('您是否确定将此设置为幻灯片显示？？')){return  false;}">设置幻灯片</a>
+		                               <else />
+			                           <a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Resource/slide',array('id'=>$vo['id'],'slide'=>'1'))}" onclick="if(!confirm('您是否确定将此设置为幻灯片显示？？')){return  false;}">设置幻灯片</a>
+		                           </empty>
+		                        <else/>
+		                            <a type="button" class="btn btn-outline btn-warning btn-xs" href="{:U('Resource/slide',array('id'=>$vo['id'],'slide'=>'0'))}" onclick="if(!confirm('您是否确定取消设置为幻灯片显示？？')){return  false;}">取消幻灯片</a>
+	                            </if>
+
+                                <a href="{:U('Resource/editgame',array('id'=>$vo['id']))}" type="button" class="btn btn-outline btn-primary btn-xs">修改</a>
+                                <a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Resource/delgame',array('id'=>$vo['id']))}" onclick="if(!confirm('您是否确定要删除该游戏记录？？')){return  false;}">删除</a>
+                                <if condition="($vo.status eq 2) ">
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Resource/chggamestatus',array('id'=>$vo['id'],'status'=>'1'))}" onclick="if(!confirm('您是否确定要上架该游戏记录？？')){return  false;}">上架</a>
+                                    <else/>
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Resource/chggamestatus',array('id'=>$vo['id'],'status'=>'2'))}" onclick="if(!confirm('您是否确定要下架该游戏记录？？')){return  false;}">下架</a>
+                                </if>
+	                            <a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Resource/getAPK',array('id'=>$vo['id']))}" onclick="if(!confirm('您是否确定要更新包名？')){return  false;}">更新包名</a>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <div class="panel-footer clearfix">
+                    {$page}
+                </div>
+            </div><!-- /panel -->
+        </div><!-- /.padding-md -->
+    </div><!-- /main-container -->
+</block>
+<block name="extjs">
+
+	<script language="javascript" type="text/javascript">
+		$(document).ready(function(){
+			$("#keyword").click(function(){
+				var keywords = $("#keywords").val();
+				if(keywords == ''){
+					alert('请输入筛选关键字');
+				}else{
+					var xx =  "{:U('Resource/gamesmgrkeywords')}"+"?keywords="+keywords+".html";
+					window.location =xx;
+				}
+			});
+		});
+		$("#keywords").keypress(function(e){
+			if (event.keyCode == 13) {
+				event.cancelBubble = true;
+				event.returnValue = false;
+				$('#keyword').click();
+			}
+		});
+	</script>
+
+
+</block>

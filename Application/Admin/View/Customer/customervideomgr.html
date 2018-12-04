@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Pinet 管理后台</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Bootstrap core CSS -->
+	<link href="__PUBLIC__/Admin/Endless/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Font Awesome-->
+	<link href="__PUBLIC__/Admin/Endless/css/font-awesome.min.css" rel="stylesheet">
+	<!-- Pace -->
+	<link href="__PUBLIC__/Admin/Endless/css/pace.css" rel="stylesheet">
+	<!-- Datatable -->
+	<link href="__PUBLIC__/Admin/Endless/css/jquery.dataTables_themeroller.css" rel="stylesheet">
+	<!-- Endless -->
+	<link href="__PUBLIC__/Admin/Endless/css/endless.min.css" rel="stylesheet">
+	<link href="__PUBLIC__/Admin/Endless/css/endless-skin.css" rel="stylesheet">
+	<block name="extcss"></block>
+</head>
+
+<body>
+		<div id="main-container" style="width: 100%;padding: 0px;margin: 0px;">
+			<div class="padding-md">
+				<div class="panel panel-default table-responsive">
+					<div class="panel-heading clearfix">
+						<h4 class="pull-left">厂区视频播放数据统计</h4>
+						<form id="formToggleLine" class="form-horizontal no-margin form-border" method="get" action="Record/videoStatistic"  enctype="multipart/form-data">
+							<label class="pull-left control-label" style="width: 140px;text-align: right;">筛选时间段：</label>
+							<input type="text" name="start_time" style="width:150px;" id="countTimestart" class="pull-left form-control" onfocus="selecttime(1)" value="{$start_time}" size="17" class="date" readonly>
+							<span class="pull-left" style="display: block;padding: 0px 5px;"> - </span>
+							<input type="text" name="end_time" style="width:150px;margin-right: 20px;"  id="countTimeend" class="pull-left form-control" onfocus="selecttime(2)" value="{$end_time}" size="17"  class="date" readonly>
+							<input type="hidden" name="id" value="{$id}">
+							<button type="submit" class="btn btn-info pull-left">筛选</button>
+						</form>
+						<h4 class="label label-info label-lg pull-right">共 {$total} 项</h4>
+					</div>
+
+					<table class="table table-striped" id="responsiveTable">
+						<thead>
+						<tr>
+							<th width="5%">视频ID</th>
+
+							<th width="15%">名称</th>
+							<th width="8%">分类</th>
+							<th width="5%">观看次数</th>
+
+						</tr>
+						</thead>
+						<tbody>
+						<volist name="data" id="vo">
+							<tr>
+								<td>{$vo.id}</td>
+								<td><div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis" class="address">{$vo.name}</div></td>
+								<td>{$vo.category}</td>
+								<td>{$vo.total}</td>
+							</tr>
+						</volist>
+						</tbody>
+					</table>
+					<div class="panel-footer clearfix">
+						{$page}
+					</div>
+				</div><!-- /panel -->
+			</div><!-- /.padding-md -->
+		</div><!-- /main-container -->
+
+
+<!-- Jquery -->
+<script src="__PUBLIC__/Admin/Endless/js/jquery-1.10.2.min.js"></script>
+		<script  src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+		<script type="text/javascript">
+			//时间选择
+			$(function(){
+				function selecttime(flag){
+					if(flag==1){
+						var endTime = $("#countTimeend").val();
+						if(endTime != ""){
+							WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00',maxDate:endTime});
+						}else{
+							WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00'});
+						}
+					}else{
+						var startTime = $("#countTimestart").val();
+						if(startTime != ""){
+							WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59',minDate:startTime});
+						}else{
+							WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59'});
+						}
+					}
+				}
+				$('#countTimestart').focus(function(){
+					selecttime(1);
+				});
+				$('#countTimeend').focus(function(){
+					selecttime(2);
+				});
+			});
+		</script>
+</body>
+</html>
+
+
+
+
+

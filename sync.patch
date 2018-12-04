@@ -1,0 +1,13 @@
+diff --git a/Application/Admin/Controller/ResourceController.class.php b/Application/Admin/Controller/ResourceController.class.php
+index f169197..4036101 100755
+--- a/Application/Admin/Controller/ResourceController.class.php
++++ b/Application/Admin/Controller/ResourceController.class.php
+@@ -167,7 +167,7 @@ class ResourceController extends Controller {
+                 $this->error('编辑数据失败');
+             }
+ 
+-            
++
+         }else{
+             $id = I('get.id','','int');
+             $this->data = $this->videoLogic->getVideoById($id);

@@ -1,0 +1,95 @@
+<extend name="Public:base"/>
+<block name='systemmenu'>active open</block>
+<block name='systemCorner'>active</block>
+<block name="pagecont">
+	<div id="main-container">
+		<div class="padding-md">
+			<div class="panel panel-default table-responsive">
+				<div class="panel-heading">
+					<h4>角标管理
+						<span class="label label-info pull-right">共 {$total} 项</span></h4>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-4 col-sm-4">
+							<a href="{:U('System/addCorner')}" class="btn btn-sm btn-success" type="button"><i class="fa fa-plus fa-lg"></i> 增加角标</a>
+						</div><!-- /.col -->
+
+						<div class="col-md-4 col-sm-4">
+
+							<div class="dropdown">
+								<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+									角标分类显示
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+									<li><a href="{:U('System/cornermgr')}">所有</a></li>
+									<li><a href="{:U('System/cornermgr',array('type'=>1))}">视频角标</a></li>
+									<li><a href="{:U('System/cornermgr',array('type'=>2))}">应用角标</a></li>
+									<li><a href="{:U('System/cornermgr',array('type'=>3))}">购物商城</a></li>
+									<li><a href="{:U('System/cornermgr',array('type'=>4))}">积分商城</a></li>
+								</ul>
+							</div>
+
+						</div><!-- /.col -->
+
+					</div><!-- /.row -->
+				</div>
+				<table class="table table-striped" id="responsiveTable">
+					<thead>
+					<tr>
+						<th width="5%">ID</th>
+						<th width="10%">角标名称</th>
+						<th width="10%">展示</th>
+						<th width="5%">状态</th>
+						<th width="6%">用途</th>
+						<th width="20%">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					<volist name="data" id="vo">
+						<tr>
+							<td>{$vo.id}</td>
+							<td>{$vo.name}</td>
+							<td><img src="{$Think.const.WEB_ROOT}{$vo.img}" onload="if(this.width>50 ) this.width=50;  if(this.height>20) this.height=20;"></td>
+
+
+							<td class="center">
+								<if condition="($vo.status eq 1) ">
+									<a class="btn btn-success btn-xs">正常</a>
+									<else/>
+									<a class="btn btn-danger btn-xs">下架</a>
+								</if>
+							</td>
+							<td>
+								<if condition="($vo.type eq 1) ">
+									视频
+									<elseif condition="($vo.type eq 2) "/>
+										应用
+									<elseif condition="($vo.type eq 3) "/>
+										购物商城
+									<else/>
+										积分商城
+								</if>
+							</td>
+							<td class="center">
+
+								<a href="{:U('System/editCorner',array('id'=>$vo['id']))}" type="button" class="btn btn-outline btn-primary btn-xs">修改</a>
+								<a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('System/delcorner',array('id'=>$vo['id']))}" onclick="if(!confirm('您是否确定要删除该应用记录？')){return  false;}">删除</a>
+								<if condition="($vo.status eq 2) ">
+									<a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('System/chgcornerstatus',array('id'=>$vo['id'],'status'=>'1'))}" onclick="if(!confirm('您是否确定要上架该应用记录？')){return  false;}">上架</a>
+									<else/>
+									<a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('System/chgcornerstatus',array('id'=>$vo['id'],'status'=>'2'))}" onclick="if(!confirm('您是否确定要下架该应用记录？')){return  false;}">下架</a>
+								</if>
+							</td>
+						</tr>
+					</volist>
+					</tbody>
+				</table>
+				<div class="panel-footer clearfix">
+					{$page}
+				</div>
+			</div><!-- /panel -->
+		</div><!-- /.padding-md -->
+	</div><!-- /main-container -->
+</block>

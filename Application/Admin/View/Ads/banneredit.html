@@ -1,0 +1,448 @@
+<extend name="Public:base"/>
+<block name='adsmenu'>active open</block>
+<block name='adssubmenubannermgr'>active</block>
+<block name="pagecont">
+    <div id="main-container">
+        <div class="padding-md">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <if condition="($act eq add) ">
+                        <h3>新增广告</h3>
+                        <else/>
+                        <h3>广告编辑</h3>
+                    </if>
+                </div>
+                <div class="panel-body">
+                    <form id="formToggleLine" class="form-horizontal no-margin form-border" method="post" action="__ACTION__"  enctype="multipart/form-data" >
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">标题</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" type="text" placeholder="请输入广告位标题" name="name" value="{$data.name}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">排序</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" type="text" placeholder="请输入排序，无序请输入0或者不输入" name="sort" value="{$data.sort}">
+                            </div>
+                        </div>
+
+	                    <div class="form-group">
+		                    <label class="col-lg-2 control-label">使用平台</label>
+		                    <div class="col-lg-4">
+			                    <select name="platform"  class="form-control" >
+				                    <volist name="platform" id="vo" key="k">
+					                    <if condition="$k eq $data.platform "><option value="{$k}" selected="selected">{$vo}</option>
+						                    <else /> <option value="{$k}" >{$vo}</option>
+					                    </if>
+
+				                    </volist>
+			                    </select>
+		                    </div>
+	                    </div>
+
+	                    <div class="form-group">
+		                    <label class="col-lg-2 control-label">广告性质</label>
+		                    <div class="col-lg-4">
+			                    <select name="character"  class="form-control" >
+				                    <volist name="character" id="vo" key="k">
+					                    <if condition="$k eq $data.character "><option value="{$k}" selected="selected">{$vo}</option>
+						                    <else /> <option value="{$k}" >{$vo}</option>
+					                    </if>
+
+				                    </volist>
+			                    </select>
+		                    </div>
+	                    </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">广告类型</label>
+                            <div class="col-lg-4">
+                                <select name="type" id="type" class="form-control" >
+                                    <volist name="types" id="vo" key="k">
+                                        <if condition="$k eq $data.type "><option value="{$k}" selected="selected">{$vo}</option>
+                                            <else /> <option value="{$k}" >{$vo}</option>
+                                        </if>
+
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+	                    <div class="form-group">
+		                    <label class="col-lg-2 control-label">链接类型</label>
+		                    <div class="col-lg-4">
+			                    <select name="resourcetype" id="resourcetype" class="form-control" >
+				                    <volist name="resourcetype" id="vo" key="k">
+					                    <if condition="$k eq $data.resourcetype "><option value="{$k}" selected="selected">{$vo}</option>
+						                    <else /> <option value="{$k}" >{$vo}</option>
+					                    </if>
+
+				                    </volist>
+			                    </select>
+		                    </div>
+	                    </div>
+	                    <div class="form-group hrefAd">
+		                    <label class="col-lg-2 control-label">资源ID</label>
+		                    <div class="col-lg-10">
+			                    <input class="form-control" type="text" placeholder="请输入资源ID" name="model" value="{$data.model}">
+		                    </div>
+	                    </div>
+
+	                    <div class="form-group hrefAd">
+		                    <label class="col-lg-2 control-label">列表参数</label>
+		                   <!-- <div class="col-lg-10">
+			                    <input class="form-control" type="text" placeholder="请输入筛选列表参数" name="param" value="{$data.param}">
+		                    </div>-->
+		                    <div class="col-lg-2">
+			                    <select name="apptype" id="apptype" class="form-control" >
+				                    <volist name="apptype" id="vo" key="k">
+					                    <if condition="$k eq $data.apptype "><option value="{$k}" selected="selected">{$vo}</option>
+						                    <else /> <option value="{$k}" >{$vo}</option>
+					                    </if>
+
+				                    </volist>
+			                    </select>
+		                    </div>
+		                    <div class="col-lg-2">
+			                    <select name="fitertype" id="fitertype" class="form-control" >
+				                    <volist name="fitertype" id="vo" key="k">
+					                    <if condition="$k eq $data.fitertype "><option value="{$k}" selected="selected">{$vo}</option>
+						                    <else /> <option value="{$k}" >{$vo}</option>
+					                    </if>
+
+				                    </volist>
+			                    </select>
+		                    </div>
+		                    <div class="col-lg-2">
+			                    <select name="appcategory" id="appcategory" class="form-control" >
+				                    <volist name="appcategory" id="vo" key="k">
+					                    <if condition="$vo['id'] eq $data.appcategory "><option value="{$vo['id']}" selected="selected">{$vo['name']}</option>
+						                    <else /> <option value="{$vo['id']}" >{$vo['name']}</option>
+					                    </if>
+
+				                    </volist>
+			                    </select>
+		                    </div>
+
+
+	                    </div>
+
+	                    <div class="form-group hrefAd">
+		                    <label class="col-lg-2 control-label">外链地址</label>
+		                    <div class="col-lg-10">
+			                    <input class="form-control" type="text" placeholder="请输入链接地址，如: http://www.example.com" name="url" value="{$data.url}">
+		                    </div>
+	                    </div>
+
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">有效期</label>
+                            <div class="col-lg-10">
+                                <input type="text" name="start_time" id="countTimestart" onfocus="selecttime(1)" value="{$data.start_time}" size="17" class="date" readonly> -
+                                <input type="text" name="end_time" id="countTimeend" onfocus="selecttime(2)" value="{$data.end_time}" size="17"  class="date" readonly>
+                            </div>
+                        </div>
+
+	                    <div class="form-group">
+		                    <label class="col-lg-2 control-label">所属广告位置</label>
+		                    <div class="col-lg-4">
+			                    <select name="position"  class="form-control" >
+				                    <volist name="pos" id="vo">
+					                    <if condition="$vo.id eq $data.pid "><option value="{$vo.id}" selected="selected">{$vo.title}</option>
+						                    <else /> <option value="{$vo.id}" >{$vo.title}</option>
+					                    </if>
+				                    </volist>
+			                    </select>
+		                    </div>
+	                    </div>
+
+	                    </notempty>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">描述</label>
+                            <div class="col-lg-10">
+                                <textarea class="form-control" rows="5" name="content">{$data.content}</textarea>
+                            </div>
+                        </div>
+
+	                    <!--
+	                    <div class="form-group">
+		                    <label class="col-lg-2 control-label">图片</label>
+		                    <div class="col-lg-10">
+			                    <input type="file" name="img" id="doc" style="width:150px;" onchange="javascript:setImagePreview();">
+		                    </div>
+	                    </div>
+
+	                    <notempty name="data.img">
+		                    <div class="form-group">
+			                    <label class="col-lg-2 control-label">当前图片</label>
+			                    <div class="col-lg-10" id="localImag">
+				                    <img id="preview" src="{$Think.WEB_ROOT}{$data.img}" height="120px"/>
+			                    </div>
+		                    </div>
+	                    </notempty>-->
+
+	                    <div class="form-group">
+		                    <label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>图片</label>
+		                    <div class="col-lg-10">
+
+			                    <div id="queue"></div>
+			                    <input id="file_upload" name="file_upload" type="file" multiple="true">
+			                    <span id="width"></span><span id="hight"></span>
+
+			                    <div id='imagesdiv'>
+				                    <volist name="simgs" id="vo">
+					                    <div><img src='{$Think.WEB_ROOT}{$vo}' style='margin:15px;' class="img"/></img>
+						                    <br/>
+						                    <a  class='btn btn-danger btn-xs' onclick="removeImgnode(this)"><i class='fa fa-trash-o fa-lg'></i> 删除</a>
+						                    <input type='hidden'  name='img[]' value='{$vo}' >
+					                        <button type="button" class="fa fa-scissors fa-lg" id="jianqie" onclick='checkCoords();'>剪切</button>
+					                    </div>
+				                    </volist>
+			                    </div>
+		                    </div>
+	                    </div>
+
+	                    <div class="form-group" id="curtdiv" style="display:none;">
+		                    <label class="col-lg-2 control-label">剪切展示</label>
+		                    <div class="col-lg-10">
+			                    <div><img src='' style='margin:15px;' id="curtimgid"/></img>
+				                    <br/>
+				                    <a  class='btn btn-danger btn-xs' onclick="hiddencurtdiv()"><i class='fa fa-trash-o fa-lg'></i> 删除</a>
+				                    <input type='hidden'  name='hiddencurtimg' value='' id="hiddencutimg">
+			                    </div>
+		                    </div>
+	                    </div>
+
+	                    <input type="hidden" id="x" name="x" />
+	                    <input type="hidden" id="y" name="y" />
+	                    <input type="hidden" id="w" name="w" />
+	                    <input type="hidden" id="h" name="h" />
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"></label>
+                            <div class="col-lg-10">
+                                <input type="hidden" name="act" value="{$act}"/>
+                                <input type="hidden" name="id" value="{$data.id}"/>
+                                <button type="submit" class="btn btn-success">保存</button>
+                                <a href="{:U('Ads/bannermgr')}" type="reset" class="btn btn-danger">取消</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+
+<block name="extjs">
+	<script type="text/javascript" src="__PUBLIC__/Admin/Endless/js/jquery.Jcrop.min.js"></script>
+	<link rel="stylesheet" href="__PUBLIC__/Admin/Endless/css/jquery.Jcrop.min.css" type="text/css" />
+
+	<script type="text/javascript">
+
+		$(function(){
+			$('.img').Jcrop({
+				aspectRatio: 1242/222,
+				onSelect: updateCoords,
+				onChange: updateCoords
+			});
+		});
+
+		function updateCoords(c)
+		{
+			$('#x').val(c.x);
+			$('#y').val(c.y);
+			$('#w').val(c.w);
+			$('#h').val(c.h);
+			$('#width').text(Math.round(c.w));
+			$('#hight').text(','+ Math.round(c.h));
+		};
+
+
+		function checkCoords()
+		{
+			if (parseInt($('#w').val())){
+
+				var cf = confirm('确定剪切图片吗？');
+				if(cf){
+					$.post("{:U('Ads/imgJcrop')}",
+							{
+								x:$('#x').val(),
+								y:$('#y').val(),
+								w:$('#w').val(),
+								h:$('#h').val(),
+								url:$('.img').attr('src')
+							},
+							function(data,status){
+								var url = "{$Think.WEB_ROOT}"+data+'?xx='+ Math.random();
+							//	$('img').attr('src',url);
+
+								$('#hiddencutimg').attr('value',data);
+								$('#curtimgid').attr('src',url);
+								$('#curtdiv').show();
+							}
+					);
+				}
+			}else{
+				alert('请选择需要剪切的区域');
+			}
+		};
+
+	</script>
+
+	<script type="text/javascript">
+		function hiddencurtdiv(){
+			if(!confirm('您是否确定要删除该图片？')){return  false;}
+			else{
+				$('#hiddencutimg').attr('value','');
+				$('#curtdiv').hide();
+			}
+		}
+
+		$(function(){
+			$('.hrefAd').hide();
+			function showType(index){
+				$('.hrefAd').hide();
+				$('.hrefAd').eq(index-1).show();
+			}
+			showType($('#resourcetype').val());
+			$('#resourcetype').change(function(){
+				showType($(this).val());
+
+			});
+		})
+	</script>
+
+    <script type="text/javascript">
+        function setImagePreview(avalue) {
+            var docObj=document.getElementById("doc");
+
+            var imgObjPreview=document.getElementById("preview");
+            if(docObj.files &&docObj.files[0])
+            {
+
+                imgObjPreview.style.display = 'block';
+                imgObjPreview.style.width = '150px';
+                imgObjPreview.style.height = '180px';
+                imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+            }
+            else
+            {
+                docObj.select();
+                var imgSrc = document.selection.createRange().text;
+                var localImagId = document.getElementById("localImag");
+                localImagId.style.width = "150px";
+                localImagId.style.height = "180px";
+                try{
+                    localImagId.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+                    localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+                }
+                catch(e)
+                {
+                    alert("您上传的图片格式不正确，请重新选择!");
+                    return false;
+                }
+                imgObjPreview.style.display = 'none';
+                document.selection.empty();
+            }
+            return true;
+        }
+
+    </script>
+
+    <script  src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        //时间选择
+        $(function(){
+            function selecttime(flag){
+                if(flag==1){
+                    var endTime = $("#countTimeend").val();
+                    if(endTime != ""){
+                        WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:endTime});
+                    }else{
+                        WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'});
+                    }
+                }else{
+                    var startTime = $("#countTimestart").val();
+                    if(startTime != ""){
+                        WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:startTime});
+                    }else{
+                        WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'});
+                    }
+                }
+            }
+            $('#countTimestart').focus(function(){
+                selecttime(1);
+            });
+            $('#countTimeend').focus(function(){
+                selecttime(2);
+            });
+        });
+    </script>
+    <script src="__PUBLIC__/Uploadify/jquery.uploadify.min.js" type="text/javascript">
+    </script>
+
+    <script language="javascript" type="text/javascript">
+
+	    $(document).ready(function() {
+		    //var globalVar = new GVar();
+		    setTimeout(function(){
+			    $('#file_upload').uploadify({
+				    'formData'     : {
+				    },
+				    'buttonText' : '添加图片...',
+				    'successTimeout' : 30,
+				    'swf'      : '__PUBLIC__/Uploadify/uploadify.swf',
+				    'uploader' : "{:U('Resource/tmpupimgs')}",
+				    'onUploadSuccess' : function(file, data, response){
+					    if(response){
+						    var dataObj=eval("("+data+")");
+						    //console.log(dataObj);
+						    ///*
+						    $.each(dataObj, function(i, n){
+							    console.log(n);
+							    var str=$('#imagesdiv').html();
+							    var add="<div class='img_area' ><img src='"+"{$Think.WEB_ROOT}"+n+"'" +"style='margin:15px;' class='img'/>"
+									    +"<br/><a  class='btn btn-danger btn-xs' onclick=\"removeImgnode(this)\"><i class='fa fa-trash-o fa-lg'></i> 删除 </a>"
+											    +"<button type='button' class='fa fa-scissors fa-lg' id='jianqie' onclick='checkCoords();'>剪切</button>"
+									    +"<input type='hidden'  name='img[]' value='"+n+"'></div>";
+							    str+=add;
+							    $('#imagesdiv').html(str);
+							    $('.img').Jcrop({
+								    aspectRatio: 1242/222,
+								    onSelect: updateCoords,
+								    onChange: updateCoords
+							    });
+						    });//*/
+					    }
+				    }
+			    });
+		    },6);
+	    });
+	    function removeImgnode(node){
+		    if(!confirm('您是否确定要删除该图片？')){return  false;}
+		    else{
+			    var pdiv = node.parentNode;
+			    var mdiv = pdiv.parentNode;
+			    mdiv.removeChild(pdiv);
+		    }
+	    }
+
+    </script>
+</block>
+
+<block name="extcss">
+    <link href="__PUBLIC__/Uploadify/uploadify.css" rel="stylesheet" type="text/css">
+    <style type="text/css" media="all">
+        .img-square {
+            text-align:center;
+            width:200px;
+            float:left;
+            display:block;
+            margin-right:10px;
+        }
+    </style>
+</block>

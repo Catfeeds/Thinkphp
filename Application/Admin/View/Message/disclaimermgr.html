@@ -1,0 +1,70 @@
+<extend name="Public:base"/>
+<block name='sysmenu'>active</block>
+<block name='disclaimer'>active</block>
+
+<block name="pagecont">
+	<div id="main-container">
+		<div class="padding-md">
+			<div class="panel panel-default table-responsive">
+				<div class="panel-heading">
+					<h4>免责声明管理
+						<span class="label label-info pull-right">共 {$total} 项</span></h4>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-4 col-sm-4">
+							<a href="{:U('Message/adddisclaimer')}" class="btn btn-sm btn-success" type="button"><i
+									class="fa fa-plus fa-lg"></i> 增加免责声明</a>
+						</div>
+					</div>
+				</div>
+				<table class="table table-striped" id="responsiveTable">
+					<thead>
+					<tr>
+						<th width="12%">免责声明标题</th>
+						<!--<th width="25%">免责声明内容</th>-->
+						<th width="12%">发布时间</th>
+						<th width="12%">是否有效</th>
+						<th width="12%">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+
+					<volist name="data" id="vo">
+						<tr>
+							<td>{$vo.title}</td>
+						<!--	<td><div style="overflow:hidden;white-space:nowrap;  text-overflow:ellipsis;" class="setcontent">{$vo.content}</div></td>-->
+							<td>{$vo.creatime|substr=0,10}</td>
+							<td><if condition="$vo.status eq 1"><a class="btn btn-success btn-xs">有效</a>
+								<else/>
+								<a class="btn btn-danger btn-xs">无效</a></if></td>
+							<td class="center">
+								<a href="{:U('Message/editdisclaimer',array('id'=>$vo['id']))}" type="button" class="btn btn-outline btn-primary btn-xs">修改</a>
+								<a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Message/deldisclaimer',array('id'=>$vo['id']))}" onclick="if(!confirm('您是否确定要删除该免责声明？')){return  false;}">删除</a>
+							</td>
+						</tr>
+					</volist>
+					</tbody>
+				</table>
+				<div class="panel-footer clearfix">
+					{$page}
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="extjs">
+	<script type="text/javascript">
+		var setwidths = document.getElementsByClassName('setcontent');
+		for(var i=0;i<setwidths.length;i++){
+			setwidths[i].style.width =  (document.body.clientWidth/4)+'px';
+		}
+
+		window.onresize = function(){
+			var setwidths = document.getElementsByClassName('setcontent');
+			for(var i=0;i<setwidths.length;i++){
+				setwidths[i].style.width =  (document.body.clientWidth/4)+'px';
+			}
+		}
+	</script>
+</block>

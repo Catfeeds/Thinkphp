@@ -1,0 +1,110 @@
+<extend name="Public:base"/>
+<block name='shopmenu'>active</block>
+<block name='shopsubmenuindex'>active</block>
+
+<block name="pagecont">
+	<div id="main-container">
+		<div class="padding-md">
+			<div class="panel panel-default table-responsive">
+				<div class="panel-heading">
+					<h4>积分产品管理
+						<span class="label label-info pull-right">共 {$total} 项</span></h4>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-4 col-sm-4">
+							<a href="{:U('Product/addproduct')}" class="btn btn-sm btn-success" type="button"><i
+									class="fa fa-plus fa-lg"></i> 增加新产品</a>
+						</div>
+						<div class="col-md-4 col-sm-4">
+							<input type="test" name="keywords" placeholder="请输入搜索关键字" id="keywords" >
+							<a href="#" class="btn btn-sm btn-success" type="button" id="keyword"></i> 关键字筛选</a>
+						</div>
+					</div>
+				</div>
+				<table class="table table-striped" id="responsiveTable">
+					<thead>
+					<tr>
+						<th width="15%">产品名称</th>
+						<!--<th width="12%">LOGO</th>-->
+						<th width="8%">兑换积分</th>
+						<th width="8%">市场价格</th>
+						<th width="8%">总数</th>
+						<th width="8%">剩余数量</th>
+						<th width="10%">状态</th>
+						<th width="8%">类别</th>
+						<th width="15%">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+
+					<volist name="data" id="vo">
+						<tr>
+							<td>{$vo.productname}</td>
+							<!--<td><img src="{$vo.logopath}" width="100px"; height="80px"/></td>-->
+							<!--<td>{$vo.logopath}</td>-->
+							<td>{$vo.score}</td>
+							<td>￥{$vo.price}</td>
+							<td>{$vo.totalnums}</td>
+							<td>{$vo.lastnums}</td>
+							<td class="center">
+
+								<if condition="($vo.isonline eq 0) ">
+
+									<a class="btn btn-success btn-xs">正常</a>
+
+									<else/>
+
+									<a class="btn btn-danger btn-xs">下架</a>
+
+								</if>
+
+							</td>
+							<td>{$vo.name}</td>
+							<td class="center">
+								<if condition="($vo.isonline eq 0)">
+									<a href="{:U('Product/productStatus',array('id'=>$vo['id'],'type'=>'1'))}" type="button" class="btn btn-outline btn-primary btn-xs" onclick="if(!confirm('您是否确定下架该商品？')){return  false;}">下架</a>
+									<else />
+									<a href="{:U('Product/productStatus',array('id'=>$vo['id'],'type'=>'0'))}" type="button" class="btn btn-outline btn-primary btn-xs" onclick="if(!confirm('您是否确定上架该商品？')){return  false;}">上架</a>
+								</if>
+
+								<a href="{:U('Product/editproduct',array('id'=>$vo['id']))}" type="button" class="btn btn-outline btn-primary btn-xs" >修改</a>
+								<a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Product/delproduct',array('id'=>$vo['id']))}" onclick="if(!confirm('您是否确定要删除该任务信息？')){return  false;}">删除</a>
+
+							</td>
+						</tr>
+					</volist>
+					</tbody>
+				</table>
+				<div class="panel-footer clearfix">
+					{$page}
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="extjs">
+
+	<script language="javascript" type="text/javascript">
+		$(document).ready(function(){
+			$("#keyword").click(function(){
+				var keywords = $("#keywords").val();
+				if(keywords == ''){
+					alert('请输入筛选关键字');
+				}else{
+					var xx =  "{:U('Product/productkeywords')}"+"?keywords="+keywords+".html";
+					window.location =xx;
+				}
+			});
+			$("#keywords").keypress(function(e){
+				if (event.keyCode == 13) {
+					event.cancelBubble = true;
+					event.returnValue = false;
+					$('#keyword').click();
+				}
+			});
+		});
+	</script>
+
+
+</block>

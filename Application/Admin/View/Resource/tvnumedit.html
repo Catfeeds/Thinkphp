@@ -1,0 +1,171 @@
+<extend name="Public:base"/>
+<block name='resmenu'>active open</block>
+<block name='ressubmenuvideomgrtv'>active</block>
+<block name="pagecont">
+	<div id="main-container">
+		<div class="padding-md">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3>{$title}</h3>
+				</div>
+				<div class="panel-body">
+					<form id="formToggleLine" action="__ACTION__" class="form-horizontal no-margin form-border"  method="post" enctype="multipart/form-data">
+						<div class="form-group">
+							<label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>电视剧名称</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" value="{$video.name}" readonly>
+								<input type="hidden" name="videoid" value="{$video.id}">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>剧集名称</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" placeholder="请输入当前集数名称" name="name" value="{$data.name}">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>当前集数</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" placeholder="请输入当前集数 如：第一集" name="tvnum" value="{$data.tvnum}">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>视频</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" placeholder="请输入视频路径" name="filepath" value="{$data.filepath}">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>排序</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" placeholder="请输入当前排序 如：1，2，3..." name="sort" value="{$data.sort}">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>时长</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" placeholder="请输入时长" name="duratime" value="{$data.duratime}">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>详情</label>
+							<div class="col-lg-10">
+								<textarea class="form-control" rows="5" name="intro">{$data.intro}</textarea>
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-lg-2 control-label"></label>
+							<div class="col-lg-10">
+								<input type="hidden" name="act" value="{$act}"/>
+								<input type="hidden" name="id" value="{$data.id}"/>
+								<button type="submit" class="btn btn-success">保存</button>
+								<a href="{:U('Resource/tvvideomgr')}" type="reset" class="btn btn-danger">取消</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+
+<block name="extjs">
+	<script src="__PUBLIC__/Uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript">
+		$(function(){
+			$("select[name='cate']").find('option').each(function(){
+				var self=this;
+				if($(self).attr('value')== '{$data.videotype}'){
+					$(self).prop('selected',true);
+				}
+			});
+			$("#country").find('option').each(function(){
+				var cid = $(this).attr('value').split(',');
+				if(cid[0] ==  "{$data.countrycid}"){
+					$(this).prop('selected',true);
+				}
+			});
+			$("#label_cate").find('option').each(function(){
+				var cid = $(this).attr('value').split(',');
+				if(cid[0] ==  "{$data.categoryid}"){
+					$(this).prop('selected',true);
+				}
+			});
+
+		})
+		$(document).ready(function() {
+			//var globalVar = new GVar();
+			setTimeout(function(){
+				$('#file_upload').uploadify({
+					'formData'     : {
+					},
+					'buttonText' : '添加图片...',
+					'successTimeout' : 30,
+					'swf'      : '__PUBLIC__/Uploadify/uploadify.swf',
+					'uploader' : "{:U('Resource/tmpupimgs')}",
+					'onUploadSuccess' : function(file, data, response) {
+						if(response){
+							var dataObj=eval("("+data+")");
+							//console.log(dataObj);
+							///*
+							$.each(dataObj, function(i, n){
+								console.log(n);
+								var str=$('#imagesdiv').html();
+								var add="<div class='img-square'><img width='100px' src='"+"{$Think.WEB_ROOT}"+n+"'" +"style='margin:15px;'/></img>"
+										+"<br/><a  class='btn btn-danger btn-xs' onclick=\"removeImgnode(this)\"><i class='fa fa-trash-o fa-lg'></i> 删除 </a>"
+										+"<input type='hidden'  name='img[]' value='"+n+"'></div>";
+								str+=add;
+								$('#imagesdiv').html(str);
+							});//*/
+						}
+					}
+				});
+			},6);
+		});
+		function removeImgnode(node){
+			if(!confirm('您是否确定要删除该图片？')){return  false;}
+			else{
+				var pdiv = node.parentNode;
+				var mdiv = pdiv.parentNode;
+				mdiv.removeChild(pdiv);
+			}
+		}
+	</script>
+	<script  src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript">
+		//时间选择
+		$(function(){
+			function selecttime(){
+				WdatePicker({dateFmt:'yyyy'});
+			}
+			$('#years').click(function(){
+				selecttime();
+			});
+
+		});
+	</script>
+
+</block>
+
+<block name="extcss">
+	<link href="__PUBLIC__/Uploadify/uploadify.css" rel="stylesheet" type="text/css">
+	<style type="text/css" media="all">
+		.img-square {
+			text-align:center;
+			width:200px;
+			float:left;
+			display:block;
+			margin-right:10px;
+		}
+	</style>
+</block>
+

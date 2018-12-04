@@ -1,0 +1,61 @@
+<extend name="Public:base"/>
+<block name='shopmenu'>active</block>
+<block name='integralmanager'>active</block>
+
+<block name="pagecont">
+	<div id="main-container">
+		<div class="padding-md">
+			<div class="panel panel-default table-responsive">
+				<div class="panel-heading">
+					<h4>用户积分产品兑换管理
+						<span class="label label-info pull-right">共 {$total} 项</span></h4>
+				</div>
+
+				<table class="table table-striped" id="responsiveTable">
+					<thead>
+					<tr>
+						<th width="8%">产品名称</th>
+						<!--<th width="12%">LOGO</th>-->
+						<th width="6%">兑换时间</th>
+						<th width="4%">手机</th>
+						<th width="4%">收货人</th>
+						<th width="15%">收货地址</th>
+						<th width="3%">状态</th>
+						<th width="3%">邮编</th>
+						<th width="3%">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+
+					<volist name="data" id="vo">
+						<tr>
+							<td>{$vo.productname}</td>
+							<td>{$vo.exchangetimes}</td>
+							<td>{$vo.phone}</td>
+							<td>{$vo.username}</td>
+							<td>{$vo.province}{$vo.city}{$vo.district}{$vo.address}</td>
+							<td>
+							<if condition="($vo.status eq 1) ">
+								<a class="btn btn-success btn-xs">已发货</a>
+								<else/>
+								<a class="btn btn-danger btn-xs">未发货</a>
+							</if>
+							</td>
+							<td>{$vo.postcode}</td>
+							<td class="center">
+								<if condition="($vo.status eq 1) ">
+									<a href="#" class="btn btn-primary btn-xs disabled" role="button">完成发货</a>									<else/>
+									<a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Product/exchangeComplete',array('id'=>$vo['id']))}" onclick="if(!confirm('是否已发货完成？')){return  false;}">完成发货</a>
+								</if>
+							</td>
+						</tr>
+					</volist>
+					</tbody>
+				</table>
+				<div class="panel-footer clearfix">
+					{$page}
+				</div>
+			</div>
+		</div>
+	</div>
+</block>

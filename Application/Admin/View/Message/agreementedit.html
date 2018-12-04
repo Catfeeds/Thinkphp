@@ -1,0 +1,103 @@
+<extend name="Public:base"/>
+<block name='sysmenu'>active</block>
+<block name='agreement'>active</block>
+
+<block name="pagecont">
+	<div id="main-container">
+		<div class="padding-md">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3>{$title}</h3>
+				</div>
+				<div class="panel-body">
+					<if condition="($errcode neq 0) OR ($errcode neq '0')">
+						<div class="alert alert-danger">
+							<strong>警告：
+								<switch name="errcode" >
+									<case value="1">任务名已存在，保存失败，请联系管理员!</case>
+									<case value="2"> </case>
+									<case value="3"> </case>
+									<case value="9">保存成功！</case>
+								</switch>
+							</strong>
+						</div>
+					</if>
+					<form id="formToggleLine" class="form-horizontal no-margin form-border" data-validate="parsley" novalidate action="__ACTION__" method="post">
+						<div class="form-group">
+							<label class="col-lg-2 control-label">服务协议标题</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" placeholder="请输入服务协议标题"  data-required="true" name="title" value="{$data.title}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-2 control-label">服务协议内容</label>
+							<div class="col-lg-10">
+								<textarea name="content" id="post-content"><if condition="($data.content neq null)">{$data.content|htmlspecialchars_decode}<else />请在这里输入服务协议内容</if></textarea>
+							</div>
+						</div>
+						<!--
+						<div class="form-group">
+							<label class="col-lg-2 control-label">发布时间</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" placeholder="请输入发布时间"  data-required="true" name="creatime" value="{$data.creatime}">
+							</div>
+						</div>
+						-->
+						<div class="form-group">
+							<label class="col-lg-2 control-label">是否有效</label>
+							<div class="col-lg-10">
+								<select class="form-control" name="status">
+									<if condition="$data.status eq 1">
+										<option value="1" selected="selected">有效</option>
+										<option value="2" >无效</option>
+										<else/>
+										<option value="1" >有效</option>
+										<option value="2" selected="selected">无效</option>
+									</if>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-2 control-label"></label>
+							<div class="col-lg-10">
+								<input type="hidden" name="act" value="{$act}"/>
+								<input type="hidden" name="id" value="{$data.id}"/>
+								<button type="submit" class="btn btn-success">保存</button>
+								<a href="{:U('Message/agreementmgr')}" type="reset" class="btn btn-danger">取消</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+
+<block name="extjs">
+	<script src="__PUBLIC__/Admin/Endless/js/parsley.cn.min.js"></script>
+	<script language="javascript" type="text/javascript">
+		$(function(){
+			$("select[name='cate']").find('option').each(function(){
+				var self = this;
+				if($(self).val()== {$data['cid']}){
+					$(self).attr('selected',true);
+				}
+			});
+		});
+	</script>
+	<!-- 配置文件 -->
+	<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+	<!-- 编辑器源码文件 -->
+	<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.js"></script>
+	<!-- 实例化编辑器 -->
+	<script type="text/javascript">
+		var ue = UE.getEditor('post-content',{
+			toolbars: [
+				['fullscreen', 'source', 'undo', 'redo','bold', 'italic', 'underline','fontborder', 'strikethrough', '|','simpleupload', 'insertimage','attachment','emotion','link','unlink', '|', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote','searchreplace', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc'],
+				['inserttable','insertrow', 'insertcol','mergeright', 'mergedown','deleterow', 'deletecol','splittorows','splittocols', 'splittocells','deletecaption','inserttitle', 'mergecells', 'deletetable','insertparagraphbeforetable', 'paragraph','fontsize','fontfamily']
+			],
+			initialFrameHeight:500,
+			zIndex:100
+		});
+	</script>
+</block>

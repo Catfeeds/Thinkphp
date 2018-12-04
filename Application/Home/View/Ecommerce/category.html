@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0, user-scalable=0" name="viewport"/>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/category.css">
+	<script type="text/javascript" src="__PUBLIC__/Home/js/jquery.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Home/js/ks-switch.pack.js"></script>
+</head>
+<body>
+<section class="warp">
+	<section class="container">
+		<section class="opt">
+			<a href="index.html" class="back"></a>
+		</section>
+		<section class="product_box">
+			<section class="product_box_text">
+				<ul>
+					<foreach name="type" item="vo">
+						<li><a href="javascript:void(0);">{$vo.typename}</a></li>
+					</foreach>
+				</ul>
+			</section>
+
+			<section class="product_box_son">
+
+
+				<foreach name="type" item="vo">
+					<section class="product_box_son_text">
+						<?php $goods=$data[$vo['id']];?>
+						<foreach name="goods" item="v">
+							<section class="p">
+								<section class="goodImg">
+									<a href="">
+										<img src=<if condition='!empty($v["picture"])'>'{$v.picture}'<else/>'__PUBLIC__/Home/images/good_1.png'</if>>
+									</a>
+								</section>
+								<section class="good_name">{$v.name}</section>
+								<section class="goodInfo">
+									<section class="price">￥<span>{$v.price}</span></section>
+									<section class="good_sales">月销：<span>59</span></section>
+								</section>
+							</section>
+						</foreach>
+
+					</section>
+				</foreach>
+
+			</section>
+
+
+
+
+		</section>
+	</section>
+</section>
+<script type="text/javascript">
+	$(".product_box").switchTab({
+		titCell: ".product_box_text li",
+		mainCell: ".product_box_son_text",
+		trigger: "click",
+		effect:'slide',
+		delayTime: 0
+	});
+	$(function(){
+		$('.product_box_text').height($(document).height()-49);
+	})
+</script>
+</body>
+</html>

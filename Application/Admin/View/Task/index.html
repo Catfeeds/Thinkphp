@@ -1,0 +1,57 @@
+<extend name="Public:base"/>
+<block name='taskmenu'>active</block>
+<block name='submenuindex'>active</block>
+
+<block name="pagecont">
+	<div id="main-container">
+		<div class="padding-md">
+			<div class="panel panel-default table-responsive">
+				<div class="panel-heading">
+					<h4>任务管理
+						<span class="label label-info pull-right">共 {$total} 项</span></h4>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-4 col-sm-4">
+							<a href="{:U('Task/addtask')}" class="btn btn-sm btn-success" type="button"><i
+									class="fa fa-plus fa-lg"></i> 增加新任务</a>
+						</div>
+					</div>
+				</div>
+				<table class="table table-striped" id="responsiveTable">
+					<thead>
+					<tr>
+						<th width="12%">任务标题</th>
+						<th width="28%">任务内容</th>
+						<th width="12%">积分</th>
+						<!--<th width="12%">活动开始时间</th>
+						<th width="12%">活动结束时间</th>-->
+						<th width="12%">类别</th>
+						<th width="12%">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+
+					<volist name="data" id="vo">
+						<tr>
+							<td>{$vo.title}</td>
+							<td>{$vo.content}</td>
+							<td>{$vo.score}</td>
+							<!--<td>{$vo.starttimes}</td>
+							<td>{$vo.endtimes}</td>-->
+							<td>{$vo.name}</td>
+							<td class="center">
+								<a href="{:U('Task/edittask',array('id'=>$vo['id']))}" type="button" class="btn btn-outline btn-primary btn-xs">修改</a>
+								<a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Task/deltask',array('id'=>$vo['id']))}" onclick="if(!confirm('您是否确定要删除该任务信息？')){return  false;}">删除</a>
+							</td>
+						</tr>
+					</volist>
+					</tbody>
+				</table>
+				<div class="panel-footer clearfix">
+					{$page}
+				</div>
+			</div>
+		</div>
+	</div>
+</block>

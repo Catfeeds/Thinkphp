@@ -1,0 +1,7 @@
+[2014-07-14 09:07:39]注册新用户，发送短信失败1.Error code is:1,Error message is:请求参数缺失1,Error detail is:参数 mobile 必须传入.
+[2016-07-12 16:07:39]注册新用户，发送短信失败2.Error code is:3,Error message is:TEST2,Error detail is:TEST.
+
+[2016-07-14 16:07:39]注册新用户，发送短信失败3.Error code is:1,Error message is:请求参数缺失3,Error detail is:参数 mobile 必须传入.
+[2016-07-14 17:07:52]注册新用户,发送短信失败4.Error code is:1,Error message is:请求参数缺失4,Error detail is:参数 mobile 必须传入.
+[2016-07-14 18:07:06]注册新用户,发送短信失败5.Error code is:1,Error message is:请求参数缺失5,Error detail is:参数 mobile 必须传入.
+[2016-07-14 18:07:27]注册新用户,发送短信失败6.Error code is:1,Error message is:请求参数缺失6,Error detail is:参数 mobile 必须传入.

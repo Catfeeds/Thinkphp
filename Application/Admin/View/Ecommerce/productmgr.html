@@ -1,0 +1,83 @@
+<extend name="Public:base"/>
+<block name='shopmenu'>active</block>
+<block name='ecommerceproductmsg'>active</block>
+
+<block name="pagecont">
+	<div id="main-container">
+		<div class="padding-md">
+			<div class="panel panel-default table-responsive">
+				<div class="panel-heading">
+					<h4>电商产品管理
+						<span class="label label-info pull-right">共 {$total} 项</span></h4>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-4 col-sm-4">
+							<a href="{:U('Ecommerce/addproduct')}" class="btn btn-sm btn-success" type="button"><i
+									class="fa fa-plus fa-lg"></i> 增加新产品</a>
+						</div>
+					</div>
+				</div>
+				<table class="table table-striped" id="responsiveTable">
+					<thead>
+					<tr>
+						<th width="15%">产品名称</th>
+						<th width="8%">产品类型</th>
+						<th width="8%">产品价格</th>
+						<th width="8%">是否特价</th>
+						<th width="10%">是否必抢</th>
+						<th width="8%">是否蓝领生活专区</th>
+						<th width="8%">是否热销</th>
+						<th width="15%">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+
+					<volist name="data" id="vo">
+						<tr>
+							<td>{$vo.name}</td>
+							<td>{$vo.typename}</td>
+							<td>￥{$vo.price}</td>
+							<td>
+								<if condition="($vo.isspecial eq 1) ">
+									<a class="btn btn-success btn-xs">是</a>
+								<else/>
+									<a class="btn btn-danger btn-xs">否</a>
+								</if>
+							</td>
+							<td>
+								<if condition="($vo.isrush eq 1) ">
+									<a class="btn btn-success btn-xs">是</a>
+								<else/>
+									<a class="btn btn-danger btn-xs">否</a>
+								</if>
+							</td>
+							<td>
+								<if condition="($vo.isbluec eq 1) ">
+									<a class="btn btn-success btn-xs">是</a>
+								<else/>
+									<a class="btn btn-danger btn-xs">否</a>
+								</if>
+							</td>
+							<td>
+								<if condition="($vo.isselling eq 1) ">
+									<a class="btn btn-success btn-xs">是</a>
+								<else/>
+									<a class="btn btn-danger btn-xs">否</a>
+								</if>
+							</td>
+							<td class="center">
+								<a href="{:U('Ecommerce/editproduct',array('id'=>$vo['id']))}" type="button" class="btn btn-outline btn-primary btn-xs">修改</a>
+								<a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Ecommerce/delproduct',array('id'=>$vo['id']))}" onclick="if(!confirm('您是否确定要删除该产品信息？')){return  false;}">删除</a>
+							</td>
+						</tr>
+					</volist>
+					</tbody>
+				</table>
+				<div class="panel-footer clearfix">
+					{$page}
+				</div>
+			</div>
+		</div>
+	</div>
+</block>

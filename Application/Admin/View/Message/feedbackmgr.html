@@ -1,0 +1,73 @@
+<extend name="Public:base"/>
+<block name='sysmenu'>active</block>
+<block name='feedback'>active</block>
+
+<block name="pagecont">
+	<div id="main-container">
+		<div class="padding-md">
+			<div class="panel panel-default table-responsive">
+				<div class="panel-heading">
+					<h4>意见反馈管理
+						<span class="label label-info pull-right">共 {$total} 项</span></h4>
+				</div>
+
+				<table class="table table-striped" id="responsiveTable">
+					<thead>
+					<tr>
+						<th width="8%">意见反馈人</th>
+						<th width="15%">返回内容</th>
+						<th width="8%">反馈时间</th>
+						<th width="6%">反馈状态</th>
+						<th width="8%">处理时间</th>
+						<th width="15%">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+
+					<volist name="data" id="vo">
+						<tr>
+							<td>{$vo.contact}</td>
+							<td><div style="overflow:hidden;white-space:nowrap;  text-overflow:ellipsis;" class="setcontent">{$vo.content}</div></td>
+							<td>{$vo.creatime}</td>
+							<td><if condition="$vo.status eq 1"><a class="btn btn-danger btn-xs">未处理</a>
+								<else/>
+								<a class="btn btn-success btn-xs">已处理</a>
+								</if></td>
+							<td>
+								<empty name="vo.operationtime">
+									<a class="btn btn-danger btn-xs">未处理</a>
+									<else />
+									{$vo.operationtime}
+								</empty>
+							</td>
+							<td class="center">
+								<a href="{:U('Message/editfeedback',array('id'=>$vo['id']))}" type="button" class="btn btn-outline btn-primary btn-xs">处理</a>
+								<a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Message/delfeedback',array('id'=>$vo['id']))}" onclick="if(!confirm('您是否确定要删除该意见反馈？')){return  false;}">删除</a>
+							</td>
+						</tr>
+					</volist>
+					</tbody>
+				</table>
+				<div class="panel-footer clearfix">
+					{$page}
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="extjs">
+	<script type="text/javascript">
+		var setwidths = document.getElementsByClassName('setcontent');
+		for(var i=0;i<setwidths.length;i++){
+			setwidths[i].style.width =  (document.body.clientWidth/4)+'px';
+		}
+
+		window.onresize = function(){
+			var setwidths = document.getElementsByClassName('setcontent');
+			for(var i=0;i<setwidths.length;i++){
+				setwidths[i].style.width =  (document.body.clientWidth/4)+'px';
+			}
+		}
+
+	</script>
+</block>

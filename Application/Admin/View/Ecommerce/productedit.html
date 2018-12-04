@@ -1,0 +1,304 @@
+<extend name="Public:base"/>
+<block name='shopmenu'>active</block>
+<block name='ecommerceproductmsg'>active</block>
+<block name="extjs">
+    <!-- Parsley -->
+    <script src="__PUBLIC__/Admin/Endless/js/parsley.cn.min.js"></script>
+</block>
+
+<block name="pagecont">
+    <style>
+        input[type=checkbox], input[type=radio]{
+            opacity: 1;
+        }
+    </style>
+    <div id="main-container">
+        <div class="padding-md">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>{$title}</h3>
+                </div>
+                <div class="panel-body">
+                    <if condition="($errcode neq 0) OR ($errcode neq '0')">
+                        <div class="alert alert-danger">
+                            <strong>警告：
+                                <switch name="errcode" >
+                                    <case value="1">任务名已存在，保存失败，请联系管理员!</case>
+                                    <case value="2"> </case>
+                                    <case value="3"> </case>
+                                    <case value="9">保存成功！</case>
+                                </switch>
+                            </strong>
+                        </div>
+                    </if>
+
+                    <form id="formToggleLine" class="form-horizontal no-margin form-border" data-validate="parsley" novalidate action="__ACTION__" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>产品名称</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" type="text" placeholder="请输入产品名称"  data-required="true" name="name" value="{$data.name}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>产品类型</label>
+                            <div class="col-lg-10" style="width: 180px">
+                                <select name="type" class="form-control">
+                                    <option value="0" selected="selected">请选择</option>
+                                    <volist name="types" id="v">
+                                        <if condition="$v.id eq $data['type']">
+                                            <option value="{$v.id}" selected="selected">{$v.typename}</option>
+                                        <else/>
+                                            <option value="{$v.id}">{$v.typename}</option>
+                                        </if>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>产品价格</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" type="text" placeholder="请输入产品价格"  data-required="true" name="price" value="{$data.price}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">是否特价</label>
+                            <div class="col-lg-2">
+                                <if condition="1 eq $data['isspecial']">
+                                    <label class="radio col-sm-4"><input type="radio" name="isspecial" value="1" checked="checked" />是</label>
+                                    <label class="radio col-sm-4"><input type="radio" name="isspecial" value="0"  />否</label>
+                                <else/>
+                                    <label class="radio col-sm-4"><input type="radio" name="isspecial" value="1"  />是</label>
+                                    <label class="radio col-sm-4"><input type="radio" name="isspecial" value="0" checked="checked" />否</label>
+                                </if>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">是否必抢</label>
+                            <div class="col-lg-2">
+                                <if condition="1 eq $data['isrush']">
+                                    <label class="radio col-sm-4"><input type="radio" name="isrush" value="1" checked="checked" />是</label>
+                                    <label class="radio col-sm-4"><input type="radio" name="isrush" value="0"  />否</label>
+                                <else/>
+                                    <label class="radio col-sm-4"><input type="radio" name="isrush" value="1"  />是</label>
+                                    <label class="radio col-sm-4"><input type="radio" name="isrush" value="0" checked="checked" />否</label>
+                                </if>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">是否蓝领生活专区</label>
+                            <div class="col-lg-2">
+                                <if condition="1 eq $data['isbluec']">
+                                    <label class="radio col-sm-4"><input type="radio" name="isbluec" value="1" checked="checked" />是</label>
+                                    <label class="radio col-sm-4"><input type="radio" name="isbluec" value="0"  />否</label>
+                                    <else/>
+                                    <label class="radio col-sm-4"><input type="radio" name="isbluec" value="1"  />是</label>
+                                    <label class="radio col-sm-4"><input type="radio" name="isbluec" value="0" checked="checked" />否</label>
+                                </if>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">是否热销</label>
+                            <div class="col-lg-2">
+                                <if condition="1 eq $data['isselling']">
+                                    <label class="radio col-sm-4"><input type="radio" name="isselling" value="1" checked="checked" />是</label>
+                                    <label class="radio col-sm-4"><input type="radio" name="isselling" value="0"  />否</label>
+                                <else/>
+                                    <label class="radio col-sm-4"><input type="radio" name="isselling" value="1"  />是</label>
+                                    <label class="radio col-sm-4"><input type="radio" name="isselling" value="0" checked="checked" />否</label>
+                                </if>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>产品说明</label>
+                            <div class="col-lg-10">
+                                <textarea class="form-control parsley-validated" rows="5" placeholder="请输入产品说明" data-required="true" name="introduction">{$data.introduction}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>推广链接</label>
+                            <div class="col-lg-10">
+                                <textarea class="form-control parsley-validated" rows="5" placeholder="请输入推广链接" data-required="true" name="spread_link">{$data.spread_link}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>产品图片</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" type="file" name="picture">
+                            </div>
+                        </div>
+	                    <notempty name="data.picture">
+		                    <div class="form-group">
+			                    <label class="col-lg-2 control-label">当前图片</label>
+			                    <div class="col-lg-10">
+				                    <img src="{$Think.WEB_ROOT}{$data.picture}" height="120px"/>
+			                    </div>
+		                    </div>
+	                    </notempty>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">选择分类</label>
+                            <div class="col-lg-4">
+                                <if condition="0 eq $data['cornerid']">
+                                    <label class="radio col-sm-3"><input type="radio" name="cornerid" value="0" checked="checked" />无</label>
+                                <else/>
+                                    <label class="radio col-sm-3"><input type="radio" name="cornerid" value="0" />无</label>
+                                </if>
+                                <volist name="corners" id="v">
+                                    <if condition="$v.id eq $data['cornerid']">
+                                        <label class="radio col-sm-3" ><input type="radio" name="cornerid" value="{$v.id}" checked="checked" />{$v.name}</label>
+                                    <else/>
+                                        <label class="radio col-sm-3" ><input type="radio" name="cornerid" value="{$v.id}" />{$v.name}</label>
+                                    </if>
+                                </volist>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"></label>
+                            <div class="col-lg-10">
+                                <input type="hidden" name="act" value="{$act}"/>
+                                <input type="hidden" name="id" value="{$data.id}"/>
+                                <button type="submit" class="btn btn-success">保存</button>
+                                <a href="{:U('Ecommerce/productmgr')}" type="reset" class="btn btn-danger">取消</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="extjs">
+    <script language="javascript" type="text/javascript">
+        $(function(){
+//            $("select[name='cid']").find('option').each(function(){
+//                var self = this;
+//                if($(self).val()== {$data['categoryid']}){
+//                    $(self).attr('selected',true);
+//                }
+//            });
+        });
+    </script>
+    <script type="text/javascript">
+        function setImagePreview(avalue) {
+            var docObj=document.getElementById("doc");
+
+            var imgObjPreview=document.getElementById("preview");
+            if(docObj.files &&docObj.files[0])
+            {
+
+                imgObjPreview.style.display = 'block';
+                imgObjPreview.style.width = '150px';
+                imgObjPreview.style.height = '180px';
+                imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+            }
+            else
+            {
+                docObj.select();
+                var imgSrc = document.selection.createRange().text;
+                var localImagId = document.getElementById("localImag");
+                localImagId.style.width = "150px";
+                localImagId.style.height = "180px";
+                try{
+                    localImagId.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+                    localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+                }
+                catch(e)
+                {
+                    alert("您上传的图片格式不正确，请重新选择!");
+                    return false;
+                }
+                imgObjPreview.style.display = 'none';
+                document.selection.empty();
+            }
+            return true;
+        }
+
+    </script>
+
+    <script  src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        //时间选择
+        $(function(){
+            function selecttime(flag){
+                if(flag==1){
+                    var endTime = $("#countTimeend").val();
+                    if(endTime != ""){
+                        WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:endTime});
+                    }else{
+                        WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'});
+                    }
+                }else{
+                    var startTime = $("#countTimestart").val();
+                    if(startTime != ""){
+                        WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:startTime});
+                    }else{
+                        WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'});
+                    }
+                }
+            }
+            $('#countTimestart').focus(function(){
+                selecttime(1);
+            });
+            $('#countTimeend').focus(function(){
+                selecttime(2);
+            });
+        });
+    </script>
+    <script src="__PUBLIC__/Uploadify/jquery.uploadify.min.js" type="text/javascript">
+    </script>
+
+    <script language="javascript" type="text/javascript">
+
+        $(document).ready(function(){
+            //var globalVar = new GVar();
+            setTimeout(function(){
+                $('#file_upload').uploadify({
+                    'formData'     : {
+                    },
+                    'buttonText' : '添加图片...',
+                    'successTimeout' : 30,
+                    'swf'      : '__PUBLIC__/Uploadify/uploadify.swf',
+                    'uploader' : "{:U('Resource/tmpupimgs')}",
+                    'onUploadSuccess' : function(file, data, response) {
+                        if(response){
+                            var dataObj=eval("("+data+")");
+                            //console.log(dataObj);
+                            ///*
+                            $.each(dataObj, function(i, n){
+                                console.log(n);
+                                var str=$('#imagesdiv').html();
+                                var add="<div class='img-square'><img width='100px' src='"+"{$Think.WEB_ROOT}"+n+"'" +"style='margin:15px;'/></img>"
+                                        +"<br/><a  class='btn btn-danger btn-xs' onclick=\"removeImgnode(this)\"><i class='fa fa-trash-o fa-lg'></i> 删除 </a>"
+                                        +"<input type='hidden'  name='img[]' value='"+n+"'></div>";
+                                str+=add;
+                                $('#imagesdiv').html(str);
+                            });//*/
+                        }
+                    }
+                });
+            },6);
+            function removeImgnode(node){
+                if(!confirm('您是否确定要删除该图片？')){return  false;}
+                else{
+                    var pdiv = node.parentNode;
+                    var mdiv = pdiv.parentNode;
+                    mdiv.removeChild(pdiv);
+                }
+            }
+        })
+
+    </script>
+</block>
+
+<block name="extcss">
+    <link href="__PUBLIC__/Uploadify/uploadify.css" rel="stylesheet" type="text/css">
+    <style type="text/css" media="all">
+        .img-square {
+            text-align:center;
+            width:200px;
+            float:left;
+            display:block;
+            margin-right:10px;
+        }
+    </style>
+</block>

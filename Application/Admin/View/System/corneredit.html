@@ -1,0 +1,66 @@
+<extend name="Public:base"/>
+<block name='systemmenu'>active open</block>
+<block name='systemCorner'>active</block>
+<block name="pagecont">
+	<div id="main-container">
+		<div class="padding-md">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3>{$title}</h3>
+				</div>
+				<div class="panel-body">
+					<form id="formToggleLine" class="form-horizontal no-margin form-border" method="post" action="__ACTION__"  enctype="multipart/form-data">
+						<div class="form-group">
+							<label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>角标名称</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" placeholder="请输入角标名称" name="name" value="{$data.name}">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>角标用途</label>
+							<div class="col-lg-10" style="width: 180px">
+								<select class="form-control" name="type">
+									<foreach name="cornerlist" item="vo">
+										<eq name="vo.id" value="$data.type">
+											<option value="{$vo.id}" selected="selected">{$vo.name}</option>
+											<else/>
+											<option value="{$vo.id}">{$vo.name}</option>
+										</eq>
+									</foreach>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-lg-2 control-label"><em class="text-danger">*&nbsp;</em>角标图片</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="file" name="img">
+							</div>
+						</div>
+						<notempty name="data.img">
+							<div class="form-group">
+								<label class="col-lg-2 control-label">当前图片</label>
+								<div class="col-lg-10">
+									<img src="{$Think.WEB_ROOT}{$data.img}" height="120px"/>
+								</div>
+							</div>
+						</notempty>
+
+						<div class="form-group">
+							<label class="col-lg-2 control-label"></label>
+							<div class="col-lg-10">
+								<input type="hidden" name="act" value="{$act}"/>
+								<input type="hidden" name="id" value="{$data.id}"/>
+								<button type="submit" class="btn btn-success">保存</button>
+								<a href="{:U('System/cornermgr')}" type="reset" class="btn btn-danger">取消</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+
+

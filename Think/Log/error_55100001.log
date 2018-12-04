@@ -1,0 +1,3 @@
+[2013-02-11 09:07:39]Error.Error code is:1,Error message is:Error1,Error detail is:参数 mobile 必须传入.
+[2013-11-01 16:07:39]Error.Error code is:3,Error message is:TEST2,Error detail is:TEST.
+[2016-07-15 15:07:27]注册新用户,发送短信失败.Error code is:2,Error message is:请求参数格式错误,Error detail is:参数 mobile 格式不正确，mobile手机号格式不正确.

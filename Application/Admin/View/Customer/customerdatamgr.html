@@ -1,0 +1,478 @@
+<extend name="Public:base"/>
+<block name='customermenu'>active</block>
+<block name='customerdatamgr'>active</block>
+<block name="pagecont">
+	<div id="main-container">
+		<div class="padding-md">
+			<div class="panel panel-default table-responsive">
+				<div class="panel-heading">
+					<h4>厂区客户管理
+						<span class="label label-info pull-right">共 {$total} 项</span></h4>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-4 col-sm-4">
+							<a href="{:U('Customer/addcustomer')}" class="btn btn-sm btn-success" type="button"><i class="fa fa-plus fa-lg"></i> 增加客户</a>
+						</div><!-- /.col -->
+					</div><!-- /.row -->
+				</div>
+				<table class="table table-striped" id="responsiveTable">
+					<thead>
+					<tr>
+						<th width="15%">客户名称</th>
+						<!-- <th width="20%">数据报表</th>
+							<th width="20%">状态</th>
+							<th width="20%">运维</th>-->
+
+						<th width="8%">状态</th>
+
+						<th width="15%">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					<volist name="data" id="vo">
+						<tr>
+							<td>{$vo.name}</td>
+							<!--
+							<td>
+								<a href="{:U('Customer/dayreport')}" class="btn btn-xs btn-info" type="button">日报</a>
+								<a href="{:U('Customer/monthreport')}" class="btn btn-xs btn-info" type="button">月报</a>
+								<!--a href="{:U('Customer/quarterreport')}" class="btn btn-xs btn-info" type="button">季报</a
+							</td>
+							<td><a href="#" class="btn btn-xs btn-danger" type="button">停止</a></td>
+							<td class="center">
+								<a href="{:U('Customer/dataupdate')}" type="button" class="btn btn-outline btn-primary btn-xs">数据更新</a>
+							</td>
+							-->
+
+							<td>
+								<empty name="vo.isdel">
+									<a class="btn btn-success btn-xs">有效</a>
+									<else/>
+									<a class="btn btn-danger btn-xs">无效</a>
+								</empty>
+							</td>
+
+							<td class="center">
+								<a href="javascript:loadIframeuser(&#34;{:U('Record/userStatistic',array('id'=>$vo['id']))}&#34;)" type="button" class="btn btn-outline btn-primary btn-xs">厂区用户</a>
+								<a href="javascript:seeView({$vo.id})" type="button" class="btn btn-outline btn-primary btn-xs">播放下载总视图</a>
+								<a href="javascript:seeViewcate({$vo['id']})" type="button" class="btn btn-outline btn-primary btn-xs">下载统计</a>
+								<a href="javascript:loadIframe(&#34;{:U('Record/videoStatistic',array('id'=>$vo['id']))}&#34;)" type="button" class="btn btn-outline btn-primary btn-xs">播放统计</a>
+								<a href="javascript:loadIframelogin(&#34;{:U('Record/userLoginData',array('id'=>$vo['id']))}&#34;)" type="button" class="btn btn-outline btn-primary btn-xs">登入明细</a>
+								<a href="javascript:loadErrorLog(&#34;{:U('Record/getErrorLog',array('id'=>$vo['id']))}&#34;)" type="button" class="btn btn-outline btn-primary btn-xs">错误统计</a>
+								<!--<a type="button" class="btn btn-outline btn-primary btn-xs" href="{:U('Customer/delcustomer',array('id'=>$vo['id']))}" onclick="if(!confirm('您是否确定要删除该客户记录？？')){return  false;}">播放数据</a>
+						-->
+							</td>
+						</tr>
+					</volist>
+					</tbody>
+				</table>
+				<div class="panel-footer clearfix">
+					{$page}
+				</div>
+			</div><!-- /panel -->
+		</div><!-- /.padding-md -->
+	</div><!-- /main-container -->
+
+	<script src="__PUBLIC__/Admin/Endless/js/echarts.js"></script>
+
+	<div class="pop pop-kuang">
+		<div class="wrap panel panel-primary">
+			<div class="panel-heading">
+				客户查看 <i class="fa fa-remove fa-lg close"></i>
+			</div>
+			<div class="panel-body">
+				<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+				<div id="box" style="width: 800px;height:500px;"></div>
+			</div>
+			<div class="panel-footer">
+				<div class="btn-group change-month">
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="popIframe pop-kuang">
+		<div class="wrap panel panel-primary">
+			<div class="panel-heading">
+				播放统计 <i class="fa fa-remove fa-lg close"></i>
+			</div>
+			<div class="panel-body">
+				<iframe style="width: 100%;height:600px;overflow: scroll-y;border: none" id="palyCount"></iframe>
+			</div>
+		</div>
+	</div>
+
+	<div class="popIframeuser pop-kuang">
+		<div class="wrap panel panel-primary">
+			<div class="panel-heading">
+				用户信息 <i class="fa fa-remove fa-lg close"></i>
+			</div>
+			<div class="panel-body">
+				<iframe style="width: 100%;height:600px;overflow: scroll-y;border: none"></iframe>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="popIframelogin pop-kuang">
+		<div class="wrap panel panel-primary" style="width:900px;">
+			<div class="panel-heading">
+				厂区用户登入明细 <i class="fa fa-remove fa-lg close"></i>
+			</div>
+			<div class="panel-body">
+					<iframe style="width: 100%;height:600px;overflow: scroll-y;border: none"></iframe>
+			</div>
+		</div>
+	</div>
+
+	<div class="popErrorLog pop-kuang">
+		<div class="wrap panel panel-primary">
+			<div class="panel-heading">
+				错误信息 <i class="fa fa-remove fa-lg close"></i>
+			</div>
+			<div class="panel-body">
+				<iframe style="width: 100%;height:600px;overflow: scroll-y;border: none"></iframe>
+			</div>
+
+
+		</div>
+	</div>
+
+	<style>
+		.pop-kuang {
+			position: fixed;
+			left:0;
+			top:0;
+			z-index: 10;
+			display: none;
+			width: 100%;
+			height: 100%;
+			background: rgba(0,0,0,.2);
+		}
+		.wrap {
+			width: 1000px;
+			margin: 50px auto;
+		}
+		.popIframe .wrap {
+			width:60% ;
+		}
+		.list-group {
+			border-bottom: 1px solid #ccc;
+			padding-bottom: 15px;
+		}
+		.fa-remove:before {
+			content: '\f00d';
+		}
+		.close ,.close:hover {
+			color: #fff;
+			opacity: 1;
+		}
+		.change-month {
+			left:50%;
+			-webkit-transform: translateX(-50%);
+			-moz-transform: translateX(-50%);
+			-ms-transform: translateX(-50%);
+			transform: translateX(-50%);
+		}
+	</style>
+
+</block>
+<block name="extjs">
+
+
+	<script type="text/javascript">
+		var newMon=new Date().getMonth()+1;
+
+
+
+		function getBtns(fun){
+			if($('.pop').data('funName')==fun){
+				return;
+			}
+			var btns='';
+			for(var i=1;i<=newMon;i++){
+				if(i!=newMon){
+					btns+="<a type='button' class='btn btn-info' href='javascript:"+fun+"(\"same\","+i+")'>"+i+"月</a>";
+				}else{
+					btns+="<a type='button' class='btn btn-success' href='javascript:"+fun+"(\"same\","+i+")'>"+i+"月</a>";
+				}
+			}
+			$('.change-month').html(btns);
+		}
+		$('body').on('click','.change-month .btn',function(){
+			$('.change-month .btn').removeClass('btn-success').addClass('btn-info');
+			$(this).removeClass('btn-info').addClass('btn-success');
+		});
+
+		var setwidths = document.getElementsByClassName('address');
+		for(var i=0;i<setwidths.length;i++){
+			setwidths[i].style.width =  (document.body.clientWidth/7)+'px';
+		}
+
+		window.onresize = function(){
+			var setwidths = document.getElementsByClassName('address');
+			for(var i=0;i<setwidths.length;i++){
+				setwidths[i].style.width =  (document.body.clientWidth/7)+'px';
+			}
+		}
+		function seeView(id,month){
+			id=(id!='same')?id:$('.change-month').data('id');
+			month=month?month:new Date().getMonth()+1;
+			$('.change-month').data('id',id);
+			$.post(
+					"{:U('Record/customerData')}",
+					{ id: id ,month:month},
+					function (data, textStatus){
+						$('.pop').slideDown(function(){
+							/*$.each(data,function(k,v){
+								$('.pop .title').each(function(){
+									if($(this).data('title')==k){
+										$(this).next().text(v);
+									}
+								});
+								console.log(k);
+								console.log(v);
+							});*/
+							getBtns('seeView');
+							myEcharts(data);
+							$('.pop').data('funName','seeView');
+						});
+					},
+					"json"
+			);
+		};
+		$('.pop .close').click(function(){
+			$('.pop').slideUp(function(){
+				$('.change-month .btn').removeClass('btn-success').addClass('btn-info');
+				$('.change-month .btn').last().removeClass('btn-info').addClass('btn-success');
+			});
+		});
+
+
+		function myEcharts(data){
+
+			var data12 = eval(data);
+			var viewdata = data12.view;
+			var downloaddata = data12.app;
+			//console.log(viewdata);
+			// 基于准备好的dom，初始化echarts实例
+			var myChart = echarts.init(document.getElementById('box'));
+			var year=new Date().getFullYear();
+			var month=new Date().getMonth();
+			var newday =32-new Date(year,month,32).getDate();
+			var daystring=[];
+			for(var i=1;i<=newday;i++){
+				daystring.push(i+'日');
+			}
+
+
+			// 指定图表的配置项和数据
+			var option = {
+				title : {
+					text: '厂区总数据统计视图',
+					subtext: '单位:（次） 总播放:'+data12.totalvideo+'/总下载:'+data12.totaldownload
+				},
+				tooltip : {
+					trigger: 'axis'
+				},
+				legend: {
+					data:['播放数据','下载数据']
+				},
+				toolbox: {
+					show : true,
+					feature : {
+						dataView : {show: true, readOnly: false},
+						magicType : {show: true, type: ['line', 'bar']},
+						restore : {show: true},
+						saveAsImage : {show: true}
+					}
+				},
+				calculable : true,
+				xAxis : [
+					{
+						type : 'category',
+						data : daystring
+					}
+				],
+				yAxis : [
+					{
+						type : 'value'
+					}
+				],
+				series : [
+					{
+						name:'播放数据',
+						type:'bar',
+						data: viewdata,
+						markPoint : {
+							data : [
+								{type : 'max', name: '最大播放次数'},
+								{type : 'min', name: '最小播放次数'}
+							]
+						},
+						markLine : {
+							data : [
+								{type : 'average', name: '平均值'}
+							]
+						}
+					},
+					{
+						name:'下载数据',
+						type:'bar',
+						data: downloaddata,
+						markPoint : {
+							data : [
+								{name : '最大下载次数', type: 'max'},
+								{name : '最小下载次数', type: 'min'}
+							]
+						},
+						markLine : {
+							data : [
+								{type : 'average', name : '平均值'}
+							]
+						}
+					}
+				]
+			};
+
+
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option);
+		}
+
+
+
+		function seeViewcate(id,month){
+			id=(id!='same')?id:$('.change-month').data('id');
+			month=month?month:new Date().getMonth()+1;
+			$('.change-month').data('id',id);
+			$.post(
+					"{:U('Record/categoryData')}",
+					{ id: id ,month:month},
+					function (data, textStatus){
+						$('.pop').slideDown(function(){
+							/*$.each(data,function(k,v){
+							 $('.pop .title').each(function(){
+							 if($(this).data('title')==k){
+							 $(this).next().text(v);
+							 }
+							 });
+							 console.log(k);
+							 console.log(v);
+							 });*/
+							getBtns('seeViewcate');
+							myEchartscate(data);
+							$('.pop').data('funName','seeViewcate');
+						});
+					},
+					"json"
+			);
+		};
+
+		function myEchartscate(data){
+
+			var data12 = eval(data);
+			var categoryname = data12.category;
+			var appnum = data12.appcate;
+
+
+			var myChart = echarts.init(document.getElementById('box'));
+
+
+
+			// 指定图表的配置项和数据
+			var option = {
+				title : {
+					text: '厂区下载分类统计',
+					subtext: '单位:(次)  总:'+data12.totaldownload
+				},
+				tooltip : {
+					trigger: 'axis'
+				},
+				legend: {
+					data:['下载次数']
+				},
+				toolbox: {
+					show : true,
+					feature : {
+						dataView : {show: true, readOnly: false},
+						magicType : {show: true, type: ['line', 'bar']},
+						restore : {show: true},
+						saveAsImage : {show: true}
+					}
+				},
+				calculable : true,
+				xAxis : [
+					{
+						type : 'category',
+						data : categoryname
+					}
+				],
+				yAxis : [
+					{
+						type : 'value'
+					}
+				],
+				series : [
+					{
+						name:'下载次数',
+						type:'bar',
+						data: appnum,
+						markPoint : {
+							data : [
+								{type : 'max', name: '最多下载次数'},
+								{type : 'min', name: '最少下载次数'}
+							]
+						}
+
+					}
+				]
+			};
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option);
+		}
+
+		function loadIframe(id){
+			//console.log(id);
+			$('.popIframe').slideDown(function(){
+				$(this).find('iframe').attr('src',id);
+			});
+		}
+		$('.popIframe .close').click(function(){
+			$('.popIframe').slideUp();
+		});
+
+		function loadIframeuser(id){
+			//console.log(id);
+			$('.popIframeuser').slideDown(function(){
+				$(this).find('iframe').attr('src',id);
+			});
+		}
+		$('.popIframeuser .close').click(function(){
+			$('.popIframeuser').slideUp();
+		});
+
+		function loadIframelogin(id){
+			//console.log(id);
+			$('.popIframelogin').slideDown(function(){
+				$(this).find('iframe').attr('src',id);
+			});
+		}
+		$('.popIframelogin .close').click(function() {
+			$('.popIframelogin').slideUp();
+		});
+
+		function loadErrorLog(id){
+			//console.log(id);
+			$('.popErrorLog').slideDown(function(){
+				$(this).find('iframe').attr('src',id);
+			});
+		}
+		$('.popErrorLog .close').click(function(){
+			$('.popErrorLog').slideUp();
+		});
+
+	</script>
+</block>

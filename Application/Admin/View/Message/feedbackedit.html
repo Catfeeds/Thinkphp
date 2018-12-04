@@ -1,0 +1,78 @@
+<extend name="Public:base"/>
+<block name='sysmenu'>active</block>
+<block name='feedback'>active</block>
+<block name="extjs">
+	<!-- Parsley -->
+	<script src="__PUBLIC__/Admin/Endless/js/parsley.cn.min.js"></script>
+</block>
+<block name="pagecont">
+	<div id="main-container">
+		<div class="padding-md">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3>{$title}</h3>
+				</div>
+				<div class="panel-body">
+					<if condition="($errcode neq 0) OR ($errcode neq '0')">
+						<div class="alert alert-danger">
+							<strong>警告：
+								<switch name="errcode" >
+									<case value="1">任务名已存在，保存失败，请联系管理员!</case>
+									<case value="2"> </case>
+									<case value="3"> </case>
+									<case value="9">保存成功！</case>
+								</switch>
+							</strong>
+						</div>
+					</if>
+					<form id="formToggleLine" class="form-horizontal no-margin form-border" data-validate="parsley" novalidate action="__ACTION__" method="post">
+						<div class="form-group">
+							<label class="col-lg-2 control-label">反馈人联系方式</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" data-required="true" name="title" value="{$data.contact}" readonly>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-2 control-label">反馈内容</label>
+							<div class="col-lg-10">
+								<textarea class="form-control" rows="5"   data-required="true" name="content"><if condition="($data.content neq null)">{$data.content}</if></textarea>
+							</div>
+						</div>
+
+						<!--
+						<div class="form-group">
+							<label class="col-lg-2 control-label">发布时间</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" placeholder="请输入发布时间"  data-required="true" name="creatime" value="{$data.creatime}">
+							</div>
+						</div>
+						-->
+						<div class="form-group">
+							<label class="col-lg-2 control-label">处理状态</label>
+							<div class="col-lg-10">
+								<select class="form-control" name="status">
+									<if condition="$data.status eq 1">
+										<option value="1" selected="selected">未处理</option>
+										<option value="2" >已处理</option>
+										<else/>
+										<option value="1" >未处理</option>
+										<option value="2" selected="selected">已处理</option>
+									</if>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-2 control-label"></label>
+							<div class="col-lg-10">
+								<input type="hidden" name="act" value="{$act}"/>
+								<input type="hidden" name="id" value="{$data.id}"/>
+								<button type="submit" class="btn btn-success">保存</button>
+								<a href="{:U('Message/feedbackmgr')}" type="reset" class="btn btn-danger">取消</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>

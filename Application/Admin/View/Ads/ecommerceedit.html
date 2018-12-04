@@ -1,0 +1,219 @@
+<extend name="Public:base"/>
+<block name='adsmenu'>active open</block>
+<block name='adssubmenubannermgr'>active</block>
+<block name="pagecont">
+    <div id="main-container">
+        <div class="padding-md">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <if condition="($act eq add) ">
+                        <h3>新增广告</h3>
+                        <else/>
+                        <h3>广告编辑</h3>
+                    </if>
+                </div>
+                <div class="panel-body">
+                    <form id="formToggleLine" class="form-horizontal no-margin form-border" method="post" action="__ACTION__"  enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">标题</label>
+                            <div class="col-lg-4">
+                                <input class="form-control" type="text" placeholder="请输入广告位标题" name="name" value="{$data.name}" required>
+                            </div>
+                        </div>
+
+	                    <div class="form-group">
+		                    <label class="col-lg-2 control-label">所属广告位置</label>
+		                    <div class="col-lg-4">
+			                    <select name="position"  class="form-control" >
+				                    <volist name="pos" id="vo">
+					                    <if condition="$vo.id eq $data.pid ">
+                                            <option value="{$vo.id}" selected="selected">{$vo.title}</option>
+                                        <else />
+                                            <option value="{$vo.id}" >{$vo.title}</option>
+					                    </if>
+				                    </volist>
+			                    </select>
+		                    </div>
+	                    </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">图片</label>
+                            <div class="col-lg-4">
+                                <input type="file" name="img" id="doc" style="width:150px;" onchange="javascript:setImagePreview();">
+                            </div>
+                        </div>
+
+	                    <notempty name="data.img">
+		                    <div class="form-group">
+			                    <label class="col-lg-2 control-label">当前图片</label>
+			                    <div class="col-lg-4" id="localImag">
+				                    <img id="preview" src="{$Think.WEB_ROOT}{$data.img}" height="120px"/>
+			                    </div>
+		                    </div>
+	                    </notempty>
+
+	                    </notempty>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">描述</label>
+                            <div class="col-lg-4">
+                                <textarea class="form-control" rows="5" name="content">{$data.content}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"></label>
+                            <div class="col-lg-4">
+                                <input type="hidden" name="act" value="{$act}"/>
+                                <input type="hidden" name="id" value="{$data.id}"/>
+                                <button type="submit" class="btn btn-success">保存</button>
+                                <a href="{:U('Ads/bannermgr')}" type="reset" class="btn btn-danger">取消</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+
+<block name="extjs">
+	<script type="text/javascript">
+		$(function(){
+			$('.hrefAd').hide();
+			function showType(index){
+				$('.hrefAd').hide();
+				$('.hrefAd').eq(index-1).show();
+			}
+			showType($('#resourcetype').val());
+			$('#resourcetype').change(function(){
+				showType($(this).val());
+
+			});
+		})
+	</script>
+
+    <script type="text/javascript">
+        function setImagePreview(avalue) {
+            var docObj=document.getElementById("doc");
+
+            var imgObjPreview=document.getElementById("preview");
+            if(docObj.files &&docObj.files[0])
+            {
+
+                imgObjPreview.style.display = 'block';
+                imgObjPreview.style.width = '150px';
+                imgObjPreview.style.height = '180px';
+                imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+            }
+            else
+            {
+                docObj.select();
+                var imgSrc = document.selection.createRange().text;
+                var localImagId = document.getElementById("localImag");
+                localImagId.style.width = "150px";
+                localImagId.style.height = "180px";
+                try{
+                    localImagId.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+                    localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+                }
+                catch(e)
+                {
+                    alert("您上传的图片格式不正确，请重新选择!");
+                    return false;
+                }
+                imgObjPreview.style.display = 'none';
+                document.selection.empty();
+            }
+            return true;
+        }
+
+    </script>
+
+    <script  src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        //时间选择
+        $(function(){
+            function selecttime(flag){
+                if(flag==1){
+                    var endTime = $("#countTimeend").val();
+                    if(endTime != ""){
+                        WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:endTime});
+                    }else{
+                        WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'});
+                    }
+                }else{
+                    var startTime = $("#countTimestart").val();
+                    if(startTime != ""){
+                        WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:startTime});
+                    }else{
+                        WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'});
+                    }
+                }
+            }
+            $('#countTimestart').focus(function(){
+                selecttime(1);
+            });
+            $('#countTimeend').focus(function(){
+                selecttime(2);
+            });
+        });
+    </script>
+    <script src="__PUBLIC__/Uploadify/jquery.uploadify.min.js" type="text/javascript">
+    </script>
+
+    <script language="javascript" type="text/javascript">
+
+        $(document).ready(function(){
+            //var globalVar = new GVar();
+            setTimeout(function(){
+                $('#file_upload').uploadify({
+                    'formData'     : {
+                    },
+                    'buttonText' : '添加图片...',
+                    'successTimeout' : 30,
+                    'swf'      : '__PUBLIC__/Uploadify/uploadify.swf',
+                    'uploader' : "{:U('Resource/tmpupimgs')}",
+                    'onUploadSuccess' : function(file, data, response) {
+                        if(response){
+                            var dataObj=eval("("+data+")");
+                            //console.log(dataObj);
+                            ///*
+                            $.each(dataObj, function(i, n){
+                                console.log(n);
+                                var str=$('#imagesdiv').html();
+                                var add="<div class='img-square'><img width='100px' src='"+"{$Think.WEB_ROOT}"+n+"'" +"style='margin:15px;'/></img>"
+                                        +"<br/><a  class='btn btn-danger btn-xs' onclick=\"removeImgnode(this)\"><i class='fa fa-trash-o fa-lg'></i> 删除 </a>"
+                                        +"<input type='hidden'  name='img[]' value='"+n+"'></div>";
+                                str+=add;
+                                $('#imagesdiv').html(str);
+                            });//*/
+                        }
+                    }
+                });
+            },6);
+            function removeImgnode(node){
+                if(!confirm('您是否确定要删除该图片？')){return  false;}
+                else{
+                    var pdiv = node.parentNode;
+                    var mdiv = pdiv.parentNode;
+                    mdiv.removeChild(pdiv);
+                }
+            }
+        })
+
+    </script>
+</block>
+
+<block name="extcss">
+    <link href="__PUBLIC__/Uploadify/uploadify.css" rel="stylesheet" type="text/css">
+    <style type="text/css" media="all">
+        .img-square {
+            text-align:center;
+            width:200px;
+            float:left;
+            display:block;
+            margin-right:10px;
+        }
+    </style>
+</block>
